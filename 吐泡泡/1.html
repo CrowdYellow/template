@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+	<title>canvas</title>
+	<style>
+		*,body,canvas{
+			margin: 0;
+			padding: 0;
+		}
+		html,body{
+			width: 100%;
+			height: 100%;
+		}
+		#mycanvas{
+			vertical-align: bottom;
+			position: absolute;
+			top: 0;
+			left: 0;
+			right: 0;
+			bottom: 0;
+		}
+	</style>
+</head>
+<body>
+	<canvas id="mycanvas"></canvas>
+</body>
+<script>
+	//获取canvas
+	var mycanvas = document.getElementById("mycanvas");
+	//创建2d画布
+	var ctx = mycanvas.getContext("2d");
+	//设置canvas的宽
+	mycanvas.width = document.body.clientWidth;
+	//设置canvas的高
+	mycanvas.height = document.body.clientHeight;
+	//设置canvas的背景颜色
+	mycanvas.style.backgroundImage = "url('./u=1517104877,3325924109&fm=26&gp=0.jpg')";
+	mycanvas.style.backgroundSize = "100% , 100%";
+	mycanvas.style.backgroundPosition = "center , center";
+	//获取泡泡
+	var img=new Image();
+    img.src="./bubble.png";
+
+    /*//定义一个数组
+    var bubblesUp = [];
+
+    //添加泡泡
+    function BubbleUp(img,x,y,w) {
+    	//泡泡
+    	this.img = img;
+    	//x轴坐标
+		this.x = x;
+		//y轴坐标
+		this.y = y;
+		//泡泡的宽
+		this.w = w;
+
+		bubblesUp.push(this);
+    }
+
+    //渲染
+    BubbleUp.prototype.render = function () {
+    	ctx.drawImage(this.img,this.x,this.y,this.w,this.w);
+    }
+
+    BubbleUp.prototype.update = function () {
+    	this.x = this.x;
+        this.y -= 5;
+        this.w += 0.5;
+        if(this.w > 150){
+            for (var i = 0; i < bubblesUp.length; i++) {
+                if (bubblesUp[i] === this) {
+                    bubblesUp.splice(i,1);
+                };
+            }
+            return false;
+        }
+        return true;
+    }
+
+    //设置定时器每20毫秒更新和渲染
+    setInterval(function(){
+    	//清空整个屏幕
+        ctx.clearRect(0, 0, mycanvas.width, mycanvas.height)
+        for (var i = 0; i < bubblesUp.length; i++) {
+            bubbleArr[i].update() && bubbleArr[i].render();
+        	bubblesUp[i].update() && bubblesUp[i].render();
+        };
+    },1000/60);
+
+    setInterval(function(){
+    	//console.log(Math.random() * 1000)
+    	new BubbleUp(img,Math.random() * mycanvas.width,mycanvas.height -15, 5);
+    },50);*/
+
+	//鼠标移动事件
+    mycanvas.onmousemove = function(event){
+    	new Bubble(img,event.clientX,event.clientY, 50);
+    }
+
+    function Bubble(img, x, y, w) {
+    	//泡泡
+    	this.img = img;
+    	//x轴坐标
+		this.x = x;
+		//y轴坐标
+		this.y = y;
+		//泡泡的宽
+		this.w = w;
+
+		//随机方向
+        this.dx = Math.random() * 12 - 7; //x轴
+        this.dy = Math.random() * 12 - 7; //y轴
+
+        bubbleArr.push(this);
+    }
+
+    //渲染
+    Bubble.prototype.render = function () {
+    	ctx.drawImage(this.img,this.x,this.y,this.w,this.w);
+    }
+
+    //更新
+    Bubble.prototype.update = function () {
+    	this.x += this.dx;
+        this.y += this.dy;
+        this.w--;
+        if(this.w < 0){
+            for (var i = 0; i < bubbleArr.length; i++) {
+                if (bubbleArr[i] === this) {
+                    bubbleArr.splice(i,1);
+                };
+            }
+            return false;
+        }
+        return true;
+    }
+
+    //创建一个数组
+    var bubbleArr = [];
+
+    //设置定时器每20毫秒更新和渲染
+    setInterval(function(){
+    	//清空整个屏幕
+        ctx.clearRect(0, 0, mycanvas.width, mycanvas.height)
+        for (var i = 0; i < bubbleArr.length; i++) {
+            bubbleArr[i].update() && bubbleArr[i].render();
+        };
+    },20);
+</script>
+</html>
